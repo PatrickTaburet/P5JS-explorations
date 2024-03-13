@@ -29,9 +29,9 @@ function draw(){
       walker.velocity();
       walker.move();
       walker.draw();
-      // console.log(walker)
+      console.log(walker.velocityX)
       // console.log (walker.color.levels)
-      console.log (uiWeight)
+      // console.log (uiBrightness.getValue())
     }
     
   });
@@ -43,8 +43,8 @@ class Walker {
     this.y = y;
     this.px = x;
     this.py = y;
-    this.velocityX = random(-5, 5);
-    this.velocityY = random(-5, 5);
+    this.velocityX = random(-uiVelocity.getValue(), uiVelocity.getValue());
+    this.velocityY = random(-uiVelocity.getValue(),uiVelocity.getValue());
     this.color = color(random(uiColor.getValue(), (uiColor.getValue() + 200)), uiSaturation.getValue(), uiBrightness.getValue(), uiOpacity.getValue());
     this.draw();
   }
@@ -64,8 +64,7 @@ class Walker {
     this.px = this.x;
     this.py = this.y;
     noFill();
-    stroke(this.color.levels);
-    // stroke(0, 0, 50, 20);
+    stroke(random(uiColor.getValue(), (uiColor.getValue() + 200)), uiSaturation.getValue(), uiBrightness.getValue(), uiOpacity.getValue());
     strokeCap(SQUARE);
     blendMode(SCREEN);
     // smooth();
@@ -76,7 +75,7 @@ class Walker {
 function mouseClicked () {
   // walkers = [];   -> uncomment to set only one walker for one click and erase the others
   noiseSeed(random(50));
-  for (let i = 0; i < 30; i++){
+  for (let i = 0; i < lineNumber.getValue(); i++){
     walkers.push(new Walker(mouseX, mouseY));
   
   }
@@ -93,28 +92,43 @@ function reset () {
 
 let walkersProps = {
   'Color' : 110,
-  'Saturation' : 70,
-  'Brightness' : 100,
-  'Opacity' : 100,
-  'Weight' : 1,
+  'Saturation' : 90,
+  'Brightness' : 70,
+  'Opacity' : 70,
+  'Weight' : 3,
   'Amount' : window.innerWidth < 600 ? 400 : 1000,
-  'Random' : 0.2
+  'Random' : 0.2,
+  'Number of lines' : 10,
+  'Velocity' : 5
 };
 
 let props = walkersProps;
 let gui = new dat.GUI();
+// Folders
 let walkersFolder = gui.addFolder("Walkers");
-let uiColor = walkersFolder.add(props, 'Color', 0, 360, 10);
-let uiSaturation = walkersFolder.add(props, 'Saturation', 0, 100, 5);
-let uiBrightness = walkersFolder.add(props, 'Brightness', 0, 100, 5);
-let uiOpacity = walkersFolder.add(props, 'Opacity', 0, 1, 0.01);
-let uiWeight = walkersFolder.add(props, 'Weight', 0, 10, 0.5);
-// gui.addColor(props, "Color");
+let colorFolder = walkersFolder.addFolder("Colors");
+let styleFolder = walkersFolder.addFolder("Style");
+let moveFolder = walkersFolder.addFolder("Move");
+// Props by folders
+let uiColor = colorFolder.add(props, 'Color', 0, 360, 10);
+let uiSaturation = colorFolder.add(props, 'Saturation', 0, 100, 5);
+let uiBrightness = colorFolder.add(props, 'Brightness', 0, 100, 5);
+let uiOpacity = colorFolder.add(props, 'Opacity', 0, 1, 0.01);
+
+let uiWeight = styleFolder.add(props, 'Weight', 0, 10, 0.5);
+let lineNumber = styleFolder.add(props, 'Number of lines', 0, 100, 1);
+
+let uiVelocity = moveFolder.add(props, 'Velocity', 0, 10, 0.1);
+// let lineNumber = moveFolder.add(props, 'Number of lines', 0, 100, 1);
+// gui.addColor(props, "Color"); -> Color picker pannel
+
+
 uiColor.onChange(reset);
 uiSaturation.onChange(reset);
 uiBrightness.onChange(reset);
 uiOpacity.onChange(reset);
 uiWeight.onChange(reset);
+lineNumber.onChange(reset);
 
 
 // function drawGrid() {
