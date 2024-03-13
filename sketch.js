@@ -64,6 +64,7 @@ class Walker {
     this.px = this.x;
     this.py = this.y;
     noFill();
+    noiseDetail(uiNoiseOctave.getValue(), uiNoiseFalloff.getValue());
     stroke(random(uiColor.getValue(), (uiColor.getValue() + 200)), uiSaturation.getValue(), uiBrightness.getValue(), uiOpacity.getValue());
     strokeCap(SQUARE);
     blendMode(SCREEN);
@@ -99,7 +100,10 @@ let walkersProps = {
   'Amount' : window.innerWidth < 600 ? 400 : 1000,
   'Random' : 0.2,
   'Number of lines' : 10,
-  'Velocity' : 5
+  'Velocity' : 5,
+  'noiseFalloff' : 0.5,
+  'noiseOctave' : 4
+
 };
 
 let props = walkersProps;
@@ -118,7 +122,9 @@ let uiOpacity = colorFolder.add(props, 'Opacity', 0, 1, 0.01);
 let uiWeight = styleFolder.add(props, 'Weight', 0, 10, 0.5);
 let lineNumber = styleFolder.add(props, 'Number of lines', 0, 100, 1);
 
-let uiVelocity = moveFolder.add(props, 'Velocity', 0, 10, 0.1);
+let uiVelocity = moveFolder.add(props, 'Velocity', 0, 15, 0.1);
+let uiNoiseOctave = moveFolder.add(props, 'noiseOctave', 0, 10, 1);
+let uiNoiseFalloff = moveFolder.add(props, 'noiseFalloff', 0, 1, 0.05);
 // let lineNumber = moveFolder.add(props, 'Number of lines', 0, 100, 1);
 // gui.addColor(props, "Color"); -> Color picker pannel
 
@@ -129,6 +135,8 @@ uiBrightness.onChange(reset);
 uiOpacity.onChange(reset);
 uiWeight.onChange(reset);
 lineNumber.onChange(reset);
+uiNoiseOctave.onChange(reset);
+uiNoiseFalloff.onChange(reset);
 
 
 // function drawGrid() {
