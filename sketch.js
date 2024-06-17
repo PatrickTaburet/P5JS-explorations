@@ -4,139 +4,139 @@
 
 // line walker
 
-let cell = 1;
-let walkers = [];
+// let cell = 1;
+// let walkers = [];
 
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  colorMode(HSB);
-  background(0,0,0);
+// function setup() {
+//   createCanvas(windowWidth, windowHeight);
+//   colorMode(HSB);
+//   background(0,0,0);
 
-  // Create un first walker serie in the center when app is open
+//   // Create un first walker serie in the center when app is open
 
-  // for (let i = 0; i < 30; i++) {
-  //   walkers.push(new Walker(width/2, height/2));
-  //   walkers.forEach((walker)=> (walker.draw()));;
-  // }
-}
+//   // for (let i = 0; i < 30; i++) {
+//   //   walkers.push(new Walker(width/2, height/2));
+//   //   walkers.forEach((walker)=> (walker.draw()));;
+//   // }
+// }
 
-function draw(){
-// console.log((color(150,100, 100, 52).levels));
+// function draw(){
+// // console.log((color(150,100, 100, 52).levels));
 
-  walkers.forEach(walker => {
-    if (!walker.isOut()) {
-      walker.velocity();
-      walker.move();
-      walker.draw();
-      console.log(walker.velocityX)
-      // console.log (walker.color.levels)
-      // console.log (uiBrightness.getValue())
-    }
+//   walkers.forEach(walker => {
+//     if (!walker.isOut()) {
+//       walker.velocity();
+//       walker.move();
+//       walker.draw();
+//       console.log(walker.velocityX)
+//       // console.log (walker.color.levels)
+//       // console.log (uiBrightness.getValue())
+//     }
     
-  });
-}
+//   });
+// }
 
-class Walker {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.px = x;
-    this.py = y;
-    this.velocityX = random(-uiVelocity.getValue(), uiVelocity.getValue());
-    this.velocityY = random(-uiVelocity.getValue(),uiVelocity.getValue());
-    this.color = color(random(uiColor.getValue(), (uiColor.getValue() + 200)), uiSaturation.getValue(), uiBrightness.getValue(), uiOpacity.getValue());
-    this.draw();
-  }
-  velocity () {
-    this.velocityX += map(noise(this.x * 0.005, this.y * 0.005, millis() * 0.001), 0, 1, -1, 1);
-    this.velocityY += map(noise(this.y * 0.005, this.x * 0.005, millis() * 0.001), 0, 1, -1, 1);
-  }
-  isOut () {
-    return(this.x < 0 || this.x > width || this.y < 0 || this.y > height);
-  }
-  move () {
-    this.x += this.velocityX;
-    this.y += this.velocityY;
-  }
-  draw () {
-    line(this.x, this.y, this.px, this.py);
-    this.px = this.x;
-    this.py = this.y;
-    noFill();
-    noiseDetail(uiNoiseOctave.getValue(), uiNoiseFalloff.getValue());
-    stroke(random(uiColor.getValue(), (uiColor.getValue() + 200)), uiSaturation.getValue(), uiBrightness.getValue(), uiOpacity.getValue());
-    strokeCap(SQUARE);
-    blendMode(SCREEN);
-    // smooth();
-    strokeWeight(uiWeight.getValue());
-  }
+// class Walker {
+//   constructor(x, y) {
+//     this.x = x;
+//     this.y = y;
+//     this.px = x;
+//     this.py = y;
+//     this.velocityX = random(-uiVelocity.getValue(), uiVelocity.getValue());
+//     this.velocityY = random(-uiVelocity.getValue(),uiVelocity.getValue());
+//     this.color = color(random(uiColor.getValue(), (uiColor.getValue() + 200)), uiSaturation.getValue(), uiBrightness.getValue(), uiOpacity.getValue());
+//     this.draw();
+//   }
+//   velocity () {
+//     this.velocityX += map(noise(this.x * 0.005, this.y * 0.005, millis() * 0.001), 0, 1, -1, 1);
+//     this.velocityY += map(noise(this.y * 0.005, this.x * 0.005, millis() * 0.001), 0, 1, -1, 1);
+//   }
+//   isOut () {
+//     return(this.x < 0 || this.x > width || this.y < 0 || this.y > height);
+//   }
+//   move () {
+//     this.x += this.velocityX;
+//     this.y += this.velocityY;
+//   }
+//   draw () {
+//     line(this.x, this.y, this.px, this.py);
+//     this.px = this.x;
+//     this.py = this.y;
+//     noFill();
+//     noiseDetail(uiNoiseOctave.getValue(), uiNoiseFalloff.getValue());
+//     stroke(random(uiColor.getValue(), (uiColor.getValue() + 200)), uiSaturation.getValue(), uiBrightness.getValue(), uiOpacity.getValue());
+//     strokeCap(SQUARE);
+//     blendMode(SCREEN);
+//     // smooth();
+//     strokeWeight(uiWeight.getValue());
+//   }
   
-}
-function mouseClicked () {
-  // walkers = [];   -> uncomment to set only one walker for one click and erase the others
-  noiseSeed(random(50));
-  for (let i = 0; i < lineNumber.getValue(); i++){
-    walkers.push(new Walker(mouseX, mouseY));
+// }
+// function mouseClicked () {
+//   // walkers = [];   -> uncomment to set only one walker for one click and erase the others
+//   noiseSeed(random(50));
+//   for (let i = 0; i < lineNumber.getValue(); i++){
+//     walkers.push(new Walker(mouseX, mouseY));
   
-  }
+//   }
   
-}
-function reset () {
-  resizeCanvas(windowWidth, windowHeight);
-  walkers = [];
-  clear();
-  background(0,0,0);
-}
+// }
+// function reset () {
+//   resizeCanvas(windowWidth, windowHeight);
+//   walkers = [];
+//   clear();
+//   background(0,0,0);
+// }
 
-// GUI interface : 
+// // GUI interface : 
 
-let walkersProps = {
-  'Color' : 110,
-  'Saturation' : 90,
-  'Brightness' : 70,
-  'Opacity' : 70,
-  'Weight' : 3,
-  'Amount' : window.innerWidth < 600 ? 400 : 1000,
-  'Random' : 0.2,
-  'Number of lines' : 10,
-  'Velocity' : 5,
-  'noiseFalloff' : 0.5,
-  'noiseOctave' : 4
+// let walkersProps = {
+//   'Color' : 110,
+//   'Saturation' : 90,
+//   'Brightness' : 70,
+//   'Opacity' : 70,
+//   'Weight' : 3,
+//   'Amount' : window.innerWidth < 600 ? 400 : 1000,
+//   'Random' : 0.2,
+//   'Number of lines' : 10,
+//   'Velocity' : 5,
+//   'noiseFalloff' : 0.5,
+//   'noiseOctave' : 4
 
-};
+// };
 
-let props = walkersProps;
-let gui = new dat.GUI();
-// Folders
-let walkersFolder = gui.addFolder("Walkers");
-let colorFolder = walkersFolder.addFolder("Colors");
-let styleFolder = walkersFolder.addFolder("Style");
-let moveFolder = walkersFolder.addFolder("Move");
-// Props by folders
-let uiColor = colorFolder.add(props, 'Color', 0, 360, 10);
-let uiSaturation = colorFolder.add(props, 'Saturation', 0, 100, 5);
-let uiBrightness = colorFolder.add(props, 'Brightness', 0, 100, 5);
-let uiOpacity = colorFolder.add(props, 'Opacity', 0, 1, 0.01);
+// let props = walkersProps;
+// let gui = new dat.GUI();
+// // Folders
+// let walkersFolder = gui.addFolder("Walkers");
+// let colorFolder = walkersFolder.addFolder("Colors");
+// let styleFolder = walkersFolder.addFolder("Style");
+// let moveFolder = walkersFolder.addFolder("Move");
+// // Props by folders
+// let uiColor = colorFolder.add(props, 'Color', 0, 360, 10);
+// let uiSaturation = colorFolder.add(props, 'Saturation', 0, 100, 5);
+// let uiBrightness = colorFolder.add(props, 'Brightness', 0, 100, 5);
+// let uiOpacity = colorFolder.add(props, 'Opacity', 0, 1, 0.01);
 
-let uiWeight = styleFolder.add(props, 'Weight', 0, 10, 0.5);
-let lineNumber = styleFolder.add(props, 'Number of lines', 0, 100, 1);
+// let uiWeight = styleFolder.add(props, 'Weight', 0, 10, 0.5);
+// let lineNumber = styleFolder.add(props, 'Number of lines', 0, 100, 1);
 
-let uiVelocity = moveFolder.add(props, 'Velocity', 0, 15, 0.1);
-let uiNoiseOctave = moveFolder.add(props, 'noiseOctave', 0, 10, 1);
-let uiNoiseFalloff = moveFolder.add(props, 'noiseFalloff', 0, 1, 0.05);
-// let lineNumber = moveFolder.add(props, 'Number of lines', 0, 100, 1);
-// gui.addColor(props, "Color"); -> Color picker pannel
+// let uiVelocity = moveFolder.add(props, 'Velocity', 0, 15, 0.1);
+// let uiNoiseOctave = moveFolder.add(props, 'noiseOctave', 0, 10, 1);
+// let uiNoiseFalloff = moveFolder.add(props, 'noiseFalloff', 0, 1, 0.05);
+// // let lineNumber = moveFolder.add(props, 'Number of lines', 0, 100, 1);
+// // gui.addColor(props, "Color"); -> Color picker pannel
 
 
-uiColor.onChange(reset);
-uiSaturation.onChange(reset);
-uiBrightness.onChange(reset);
-uiOpacity.onChange(reset);
-uiWeight.onChange(reset);
-lineNumber.onChange(reset);
-uiNoiseOctave.onChange(reset);
-uiNoiseFalloff.onChange(reset);
+// uiColor.onChange(reset);
+// uiSaturation.onChange(reset);
+// uiBrightness.onChange(reset);
+// uiOpacity.onChange(reset);
+// uiWeight.onChange(reset);
+// lineNumber.onChange(reset);
+// uiNoiseOctave.onChange(reset);
+// uiNoiseFalloff.onChange(reset);
 
 
 // function drawGrid() {
@@ -248,96 +248,105 @@ uiNoiseFalloff.onChange(reset);
 
 
 // --------------------- Recreating the Noise Orbit (Stevan Dedovic) --------------------------
-// const numSteps = 10;
+const numSteps = 10;
 
-// function setup() {
-//   createCanvas(400, 400);
+function setup() {
+  createCanvas(1000, 1000);
+  colorMode(HSB, 360, 100, 100, 1.0);
+  colorSlider = select(".colorSlider");
+  colorRangeSlider = select(".colorRangeSlider");
+  brightnessSlider = select(".brightnessSlider");
+  moveSlider = select(".moveSlider");
+  deformSlider = select(".deformSlider");
+  deformSlider2 = select(".deformSlider2");
+  shapeSlider = select(".shapeSlider");
+  ringsSlider = select(".ringsSlider");
+}
 
-//   colorMode(HSB, 360, 100, 100, 1.0);
-// }
+function draw() {
+  background(0, 0, 0);
+  noFill(); 
+  strokeWeight(w(0.001));
+  // console.log(colorSlider.value());
+  // console.log("2 -" + colorRangeSlider.value());
+  console.log(deformSlider.value());
+  for (let radius = 0.05; radius < 0.4; radius += ringsSlider.value()+0.005) {
+    stroke(colorSlider.value()+radius*colorRangeSlider.value(), brightnessSlider.value(), 100); 
+    let circle = makeCircle(numSteps, radius);
+    let distortedCircle = distortPolygon(circle);
+    let smoothCircle = chaikin(distortedCircle, 4); // To make circle from a polygon (angle -> curve)
 
-// function draw() {
-//   background(0, 0, 100);
-//   noFill(); 
-//   stroke(0, 0, 0); 
-//   strokeWeight(w(0.001));
+    beginShape();
+    smoothCircle.forEach(point => {
+      vertex(w(point[0]), h(point[1]));
+    });
+    endShape(CLOSE); // CLOSE because the last point is not the first point
+  }
+}
 
-//   for (let radius = 0.05; radius < 0.4; radius += 0.005) {
-//     let circle = makeCircle(numSteps, radius);
-//     let distortedCircle = distortPolygon(circle);
-//     let smoothCircle = chaikin(distortedCircle, 4); // To make circle from a polygon (angle -> curve)
+function distortPolygon(polygon) {
+  const z = frameCount / 500;
+  const z2 = frameCount / 100;
 
-//     beginShape();
-//     smoothCircle.forEach(point => {
-//       vertex(w(point[0]), h(point[1]));
-//     });
-//     endShape(CLOSE); // CLOSE because the last point is not the first point
-//   }
-// }
-
-// function distortPolygon(polygon) {
-//   const z = frameCount / 500;
-//   const z2 = frameCount / 100;
-
-//   return polygon.map(point => {
-//     const x = point[0];
-//     const y = point[1];
-//     const distance = dist(0.5, 0.5, x, y);
+  return polygon.map(point => {
+    const x = point[0];
+    const y = point[1];
+    const distance = dist(deformSlider.value(),deformSlider2.value(), x, y);
     
-//     const noiseFn = (x, y) => {
-//       const noiseX = (x + 0.31) * distance * 2 + z2;
-//       const noiseY = (y - 1.73) * distance * 2 + z2;
-//       return noise(noiseX, noiseY, z);
-//     };
-//     console.log(frameCount);
-//     const theta = noiseFn(x, y) * Math.PI * 3;
+    const noiseFn = (x, y) => {
+      const noiseX = (x + 0.31) * distance * 2 + z2;
+      const noiseY = (y - 1.73) * distance * 2 + z2;
+      return noise(noiseX, noiseY, z);
+    };
+    // console.log(frameCount);
+    const theta = noiseFn(x, y) * Math.PI * 3;
     
-//     const amountToNudge = 0.08 - (Math.cos(z) * 0.08);
-//     const newX = x + (amountToNudge * Math.cos(theta));
-//     const newY = y + (amountToNudge * Math.sin(theta));
+    const amountToNudge = 0.08 - (Math.cos(z) * moveSlider.value());
+    const newX = x + (amountToNudge * Math.cos(theta));
+    const newY = y + (amountToNudge * Math.sin(theta));
     
-//     return [newX, newY];
-//   });
-// }
+    return [newX, newY];
+  });
+}
 
 
-// function makeCircle(numSides, radius) {
-//   const points = [];
-//   const radiansPerStep = (Math.PI * 2) / numSides;
-//   for (let theta = 0; theta < Math.PI * 2; theta += radiansPerStep) {
-//     const x = 0.5 + radius * Math.cos(theta);
-//     const y = 0.5 + radius * Math.sin(theta);
+function makeCircle(numSides, radius) {
+  const points = [];
+  const radiansPerStep = (Math.PI * shapeSlider.value()) / numSides;
+  for (let theta = 0; theta < Math.PI * 2; theta += radiansPerStep) {
+    const x = 0.5 + radius * Math.cos(theta);
+    const y = 0.5 + radius * Math.sin(theta);
     
-//     points.push([x, y]);
-//   }
-//   return points;
-// }
+    points.push([x, y]);
+  }
+  return points;
+}
 
-// //Chaikin algorythm : find on https://observablehq.com/@pamacha/chaikins-algorithm
+//Chaikin algorythm : find on https://observablehq.com/@pamacha/chaikins-algorithm
 
-// function chaikin(arr, num) {
-//   if (num === 0) return arr;
-//   const l = arr.length;
-//   const smooth = arr.map((c,i) => {
-//     return [[0.75*c[0] + 0.25*arr[(i + 1)%l][0],
-//              0.75*c[1] + 0.25*arr[(i + 1)%l][1]],
-//             [0.25*c[0] + 0.75*arr[(i + 1)%l][0],
-//             0.25*c[1] + 0.75*arr[(i + 1)%l][1]]];
-//     }).flat();
-//   return num === 1 ? smooth : chaikin(smooth, num - 1)
-// }
+function chaikin(arr, num) {
+  if (num === 0) return arr;
+  const l = arr.length;
+  const smooth = arr.map((c,i) => {
+    return [[0.75*c[0] + 0.25*arr[(i + 1)%l][0],
+             0.75*c[1] + 0.25*arr[(i + 1)%l][1]],
+            [0.25*c[0] + 0.75*arr[(i + 1)%l][0],
+            0.25*c[1] + 0.75*arr[(i + 1)%l][1]]];
+    }).flat();
+  return num === 1 ? smooth : chaikin(smooth, num - 1)
+}
 
-// // to set pixel range of the width between 0 and 1
+// to set pixel range of the width between 0 and 1
 
-// function w(val) {
-//   if (val == null) return width;
-//   return width * val;
-// }
+function w(val) {
+  if (val == null) return width;
+  return width * val;
+}
 
-// function h(val) {
-//   if (val == null) return height;
-//   return height * val;
-// }
+function h(val) {
+  if (val == null) return height;
+  return height * val;
+}
 
 
 
@@ -424,7 +433,7 @@ uiNoiseFalloff.onChange(reset);
 //   }
 // }
 
-// ---- Lines left et up
+// // ---- Lines left et up
 
 // if (points.length < 1) {
 //   for (let row = 0; row < density; row++) {
