@@ -261,20 +261,20 @@ function setup() {
   deformSlider2 = select(".deformSlider2");
   shapeSlider = select(".shapeSlider");
   ringsSlider = select(".ringsSlider");
+  zoomSlider = select(".zoomSlider");
   diameterSlider = select(".diameterSlider");
-  strokeSlider = select(".strokeSlider");
 }
 
 function draw() {
   background(0, 0, 0);
   noFill(); 
-  strokeWeight(w(strokeSlider.value()));
+  strokeWeight(w(0.001));
   // console.log(colorSlider.value());
   // console.log("2 -" + colorRangeSlider.value());
-  console.log(strokeSlider.value());
-  for (let radius = 0.05; radius < 0.4; radius += ringsSlider.value()+0.005) {
+
+  for (let radius = 0.05; radius < diameterSlider.value(); radius += ringsSlider.value()+0.005) {
     stroke(colorSlider.value()+radius*colorRangeSlider.value(), brightnessSlider.value(), 100); 
-    let circle = makeCircle(numSteps, radius*diameterSlider.value());
+    let circle = makeCircle(numSteps, radius*zoomSlider.value());
     let distortedCircle = distortPolygon(circle);
     let smoothCircle = chaikin(distortedCircle, 4); // To make circle from a polygon (angle -> curve)
 
