@@ -1,4 +1,127 @@
+//---------------------- Mouse walkers --------------------------
 
+let prevX, prevY;
+let mainColor;
+let colors =[];
+let lines = [];
+let lineSlider;
+
+function setup(){
+  createCanvas(windowWidth, windowHeight);
+  colorMode(HSB, 360, 100, 100, 1);
+  frameRate(50);
+  background(0, 0, 0);
+  // noStroke(); 
+  prevX = mouseX;
+  prevY = mouseY;
+  strokeWeight(3);
+  colors = [
+    color(180, 100, 50, 1),  // Cyan translucide
+    color(300, 100, 50, 1),  // Magenta translucide
+    color(120, 100, 50, 1),  // Vert translucide
+    color(60, 100, 50, 1)    // Jaune translucide
+  ];
+  lines.push({
+    prevX: mouseX,
+    prevY: mouseY,
+  })
+
+  // User Interface
+
+  lineSlider = select('#lineSlider');
+}
+
+function draw(){
+  if(!mainColor){
+    mainColor = color(180, 100, 50, 1)
+  }
+  for (let mainLine of lines) {
+    stroke(mainColor);
+
+    let stepSize = random(10, 30);
+    let direction = floor(random(4));
+
+    let newX = mainLine.prevX;
+    let newY = mainLine.prevY;
+
+    if (direction == 0) {
+        newX += stepSize;  // Right
+      } else if (direction == 1) {
+        newX -= stepSize;  // Left
+      } else if (direction == 2) {
+        newY += stepSize;  // Down
+      } else if (direction == 3) {
+        newY -= stepSize;  // Up
+      }
+    
+    line(mainLine.prevX, mainLine.prevY, newX, newY);
+
+    mainLine.prevX = newX;
+    mainLine.prevY = newY;
+
+     // Adding randlomly new lines 
+    rand = floor(random(30));
+    if (rand == 2){
+      if (lines.length < lineSlider.value()){
+        lines.push({
+          prevX: newX,
+          prevY:  newY,
+        })
+
+      }
+    }
+  }
+  // Black translucent layer to create a fade effect
+
+    fill(0, 0, 0, 0.03); 
+    noStroke();
+    rect(0, 0, width, height);
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight*2);
+    background(0, 0, 0);
+    prevX = mouseX;
+    prevY = mouseY;
+  }
+function mouseMoved() {
+  // Reposition the starting line when mouse moves
+  for (let line of lines) {
+    line.prevX = mouseX;
+    line.prevY = mouseY;
+  }
+  lines=[];
+  lines.push({
+    prevX: mouseX,
+    prevY: mouseY,
+  })
+}
+function mouseClicked(){
+  mainColor = random(colors);
+}
+
+/* 
+=======================
+Boxes lazy loading animation
+=======================
+*/
+
+document.addEventListener('DOMContentLoaded', function () {
+  let items = document.querySelectorAll('.element');
+  
+  let observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+          if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+          }
+      });
+  }, { threshold: 0.1 });
+
+  items.forEach(item => {
+      observer.observe(item);
+  });
+});
 
 // --------------------- Random walkers --------------------------
 
@@ -245,110 +368,109 @@
 //   resetMatrix();
 // }
 
-
-
 // --------------------- Recreating the Noise Orbit (Stevan Dedovic) --------------------------
-const numSteps = 10;
 
-function setup() {
-  createCanvas(1000, 1000);
-  colorMode(HSB, 360, 100, 100, 1.0);
-  colorSlider = select(".colorSlider");
-  colorRangeSlider = select(".colorRangeSlider");
-  brightnessSlider = select(".brightnessSlider");
-  moveSlider = select(".moveSlider");
-  deformSlider = select(".deformSlider");
-  deformSlider2 = select(".deformSlider2");
-  shapeSlider = select(".shapeSlider");
-  ringsSlider = select(".ringsSlider");
-  zoomSlider = select(".zoomSlider");
-  diameterSlider = select(".diameterSlider");
-}
+// const numSteps = 10;
 
-function draw() {
-  background(0, 0, 0);
-  noFill(); 
-  strokeWeight(w(0.001));
-  // console.log(colorSlider.value());
-  // console.log("2 -" + colorRangeSlider.value());
+// function setup() {
+//   createCanvas(1000, 1000);
+//   colorMode(HSB, 360, 100, 100, 1.0);
+//   colorSlider = select(".colorSlider");
+//   colorRangeSlider = select(".colorRangeSlider");
+//   brightnessSlider = select(".brightnessSlider");
+//   moveSlider = select(".moveSlider");
+//   deformSlider = select(".deformSlider");
+//   deformSlider2 = select(".deformSlider2");
+//   shapeSlider = select(".shapeSlider");
+//   ringsSlider = select(".ringsSlider");
+//   zoomSlider = select(".zoomSlider");
+//   diameterSlider = select(".diameterSlider");
+// }
 
-  for (let radius = 0.05; radius < diameterSlider.value(); radius += ringsSlider.value()+0.005) {
-    stroke(colorSlider.value()+radius*colorRangeSlider.value(), brightnessSlider.value(), 100); 
-    let circle = makeCircle(numSteps, radius*zoomSlider.value());
-    let distortedCircle = distortPolygon(circle);
-    let smoothCircle = chaikin(distortedCircle, 4); // To make circle from a polygon (angle -> curve)
+// function draw() {
+//   background(0, 0, 0);
+//   noFill(); 
+//   strokeWeight(w(0.001));
+//   // console.log(colorSlider.value());
+//   // console.log("2 -" + colorRangeSlider.value());
 
-    beginShape();
-    smoothCircle.forEach(point => {
-      vertex(w(point[0]), h(point[1]));
-    });
-    endShape(CLOSE); // CLOSE because the last point is not the first point
-  }
-}
+//   for (let radius = 0.05; radius < diameterSlider.value(); radius += ringsSlider.value()+0.005) {
+//     stroke(colorSlider.value()+radius*colorRangeSlider.value(), brightnessSlider.value(), 100); 
+//     let circle = makeCircle(numSteps, radius*zoomSlider.value());
+//     let distortedCircle = distortPolygon(circle);
+//     let smoothCircle = chaikin(distortedCircle, 4); // To make circle from a polygon (angle -> curve)
 
-function distortPolygon(polygon) {
-  const z = frameCount / 500;
-  const z2 = frameCount / 100;
+//     beginShape();
+//     smoothCircle.forEach(point => {
+//       vertex(w(point[0]), h(point[1]));
+//     });
+//     endShape(CLOSE); // CLOSE because the last point is not the first point
+//   }
+// }
 
-  return polygon.map(point => {
-    const x = point[0];
-    const y = point[1];
-    const distance = dist(deformSlider.value(),deformSlider2.value(), x, y);
+// function distortPolygon(polygon) {
+//   const z = frameCount / 500;
+//   const z2 = frameCount / 100;
+
+//   return polygon.map(point => {
+//     const x = point[0];
+//     const y = point[1];
+//     const distance = dist(deformSlider.value(),deformSlider2.value(), x, y);
     
-    const noiseFn = (x, y) => {
-      const noiseX = (x + 0.31) * distance * 2 + z2;
-      const noiseY = (y - 1.73) * distance * 2 + z2;
-      return noise(noiseX, noiseY, z);
-    };
-    // console.log(frameCount);
-    const theta = noiseFn(x, y) * Math.PI * 3;
+//     const noiseFn = (x, y) => {
+//       const noiseX = (x + 0.31) * distance * 2 + z2;
+//       const noiseY = (y - 1.73) * distance * 2 + z2;
+//       return noise(noiseX, noiseY, z);
+//     };
+//     // console.log(frameCount);
+//     const theta = noiseFn(x, y) * Math.PI * 3;
     
-    const amountToNudge = 0.08 - (Math.cos(z) * moveSlider.value());
-    const newX = x + (amountToNudge * Math.cos(theta));
-    const newY = y + (amountToNudge * Math.sin(theta));
+//     const amountToNudge = 0.08 - (Math.cos(z) * moveSlider.value());
+//     const newX = x + (amountToNudge * Math.cos(theta));
+//     const newY = y + (amountToNudge * Math.sin(theta));
     
-    return [newX, newY];
-  });
-}
+//     return [newX, newY];
+//   });
+// }
 
 
-function makeCircle(numSides, radius) {
-  const points = [];
-  const radiansPerStep = (Math.PI * shapeSlider.value()) / numSides;
-  for (let theta = 0; theta < Math.PI * 2; theta += radiansPerStep) {
-    const x = 0.5 + radius * Math.cos(theta);
-    const y = 0.5 + radius * Math.sin(theta);
+// function makeCircle(numSides, radius) {
+//   const points = [];
+//   const radiansPerStep = (Math.PI * shapeSlider.value()) / numSides;
+//   for (let theta = 0; theta < Math.PI * 2; theta += radiansPerStep) {
+//     const x = 0.5 + radius * Math.cos(theta);
+//     const y = 0.5 + radius * Math.sin(theta);
     
-    points.push([x, y]);
-  }
-  return points;
-}
+//     points.push([x, y]);
+//   }
+//   return points;
+// }
 
-//Chaikin algorythm : find on https://observablehq.com/@pamacha/chaikins-algorithm
+// //Chaikin algorythm : find on https://observablehq.com/@pamacha/chaikins-algorithm
 
-function chaikin(arr, num) {
-  if (num === 0) return arr;
-  const l = arr.length;
-  const smooth = arr.map((c,i) => {
-    return [[0.75*c[0] + 0.25*arr[(i + 1)%l][0],
-             0.75*c[1] + 0.25*arr[(i + 1)%l][1]],
-            [0.25*c[0] + 0.75*arr[(i + 1)%l][0],
-            0.25*c[1] + 0.75*arr[(i + 1)%l][1]]];
-    }).flat();
-  return num === 1 ? smooth : chaikin(smooth, num - 1)
-}
+// function chaikin(arr, num) {
+//   if (num === 0) return arr;
+//   const l = arr.length;
+//   const smooth = arr.map((c,i) => {
+//     return [[0.75*c[0] + 0.25*arr[(i + 1)%l][0],
+//              0.75*c[1] + 0.25*arr[(i + 1)%l][1]],
+//             [0.25*c[0] + 0.75*arr[(i + 1)%l][0],
+//             0.25*c[1] + 0.75*arr[(i + 1)%l][1]]];
+//     }).flat();
+//   return num === 1 ? smooth : chaikin(smooth, num - 1)
+// }
 
-// to set pixel range of the width between 0 and 1
+// // to set pixel range of the width between 0 and 1
 
-function w(val) {
-  if (val == null) return width;
-  return width * val;
-}
+// function w(val) {
+//   if (val == null) return width;
+//   return width * val;
+// }
 
-function h(val) {
-  if (val == null) return height;
-  return height * val;
-}
+// function h(val) {
+//   if (val == null) return height;
+//   return height * val;
+// }
 
 
 
