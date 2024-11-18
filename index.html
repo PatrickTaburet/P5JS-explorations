@@ -9,31 +9,36 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.9.1/lib/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
-    <div>
-      <p>colors</p>
-      <input type="range" class="colorSlider" min="0" max="360">
-      <input type="range" class="colorRangeSlider" min="0" max="1200">
-      <input type="range" class="brightnessSlider" min="0" max="100" value="0">
-    </div>
-    <div>
-      <p>Move</p>
-      <input type="range" class="moveSlider" min="0" max="1" value="0.08" step="0.005">
-      <input type="range" class="deformSlider" min="0" max="10" value="0.5" step="0.005">
-      <input type="range" class="deformSlider2" min="0" max="10" value="0.5" step="0.005">
-    </div>
-    <div>   
-      <p>shape</p>
-      <input type="range" class="shapeSlider" min="1" max="10" value="2" step="0.5">
-      <input type="range" class="ringsSlider" min="0" max="0.3" value="0" step="0.0005">
-      <input type="range" class="zoomSlider" min="0" max="5" value="1" step="0.005">
-      <!-- Stroke : Gourmand en ressources -->
-      <input type="range" class="diameterSlider" min="0.001" max="2.5" value="0.4" step="0.005"> 
-      <input type="range" min="1" max="40" value="5" step="1" class="slider" id="lineSlider" >
-    </div>
-
   </head>
 
   <body>
+    <div class="controlPannel">
+      <div>
+        <p>colors</p>
+        <input type="range" class="colorSlider" min="0" max="360">
+        <input type="range" class="colorRangeSlider" min="0" max="1200">
+        <input type="range" class="brightnessSlider" min="0" max="100" value="0">
+      </div>
+      <div>
+        <p>Move</p>
+        <input type="range" class="moveSlider" min="0" max="1" value="0.08" step="0.005">
+        <input type="range" class="deformSlider" min="0" max="10" value="0.5" step="0.005">
+        <input type="range" class="deformSlider2" min="0" max="10" value="0.5" step="0.005">
+      </div>
+      <div>   
+        <p>shape</p>
+        <input type="range" class="shapeSlider" min="1" max="10" value="2" step="0.5">
+        <input type="range" class="ringsSlider" min="0" max="0.3" value="0" step="0.0005">
+        <input type="range" class="zoomSlider" min="0" max="5" value="1" step="0.005">
+        <!-- Stroke : Gourmand en ressources -->
+        <input type="range" class="diameterSlider" min="0.001" max="2.5" value="0.4" step="0.005"> 
+      </div>
+      <div>
+        <p>lines</p>
+        <input type="range" min="1" max="40" value="5" step="1" class="slider" id="lineSlider" >
+      </div>
+    </div>
+   
     <script src="sketch.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/addons/p5.sound.min.js"></script> -->
   </body>

@@ -9,4 +9,12 @@ html, body {
   canvas {
     display: block;
   }
-  
+  .controlPannel{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 200px;
+  }
+  p {
+    color: white;
+  }

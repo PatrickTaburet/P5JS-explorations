@@ -2,7 +2,7 @@
 
 let prevX, prevY;
 let mainColor;
-let colors =[];
+let colors = [];
 let lines = [];
 let lineSlider;
 
@@ -14,7 +14,7 @@ function setup(){
   // noStroke(); 
   prevX = mouseX;
   prevY = mouseY;
-  strokeWeight(3);
+  strokeWeight(10);
   colors = [
     color(180, 100, 50, 1),  // Cyan translucide
     color(300, 100, 50, 1),  // Magenta translucide
@@ -67,7 +67,6 @@ function draw(){
           prevX: newX,
           prevY:  newY,
         })
-
       }
     }
   }
@@ -100,32 +99,7 @@ function mouseClicked(){
   mainColor = random(colors);
 }
 
-/* 
-=======================
-Boxes lazy loading animation
-=======================
-*/
-
-document.addEventListener('DOMContentLoaded', function () {
-  let items = document.querySelectorAll('.element');
-  
-  let observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-          if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-          }
-      });
-  }, { threshold: 0.1 });
-
-  items.forEach(item => {
-      observer.observe(item);
-  });
-});
-
-// --------------------- Random walkers --------------------------
-
-// line walker
+// --------------------- Random line walkers --------------------------
 
 // let cell = 1;
 // let walkers = [];
