@@ -5,6 +5,7 @@ let mainColor;
 let colors = [];
 let lines = [];
 let lineSlider;
+let noiseOffsets = []; 
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
@@ -15,6 +16,7 @@ function setup(){
   prevX = mouseX;
   prevY = mouseY;
   strokeWeight(10);
+
   colors = [
     color(180, 100, 50, 1),  // Cyan translucide
     color(300, 100, 50, 1),  // Magenta translucide
@@ -24,6 +26,9 @@ function setup(){
   lines.push({
     prevX: mouseX,
     prevY: mouseY,
+    offsetX: random(1000), // Offset de bruit pour X
+    offsetY: random(1000), // Offset de bruit pour Y
+    baseAngle: random(TWO_PI)
   })
 
   // User Interface
@@ -35,41 +40,80 @@ function draw(){
   if(!mainColor){
     mainColor = color(180, 100, 50, 1)
   }
-  for (let mainLine of lines) {
+
+  for (let i = 0; i < lines.length; i++) {
+    let mainLine = lines[i];
     stroke(mainColor);
 
-    let stepSize = random(10, 30);
-    let direction = floor(random(4));
+    // Générer des nouveaux points avec bruit
+    let noiseScale = 0.01;
+    let stepSize = 5;
+    let noiseAngle = noise(mainLine.offsetX, mainLine.offsetY) * TWO_PI; 
+    let angle = mainLine.baseAngle + noiseAngle;
 
-    let newX = mainLine.prevX;
-    let newY = mainLine.prevY;
+    let newX = mainLine.prevX + cos(angle) * stepSize;
+    let newY = mainLine.prevY + sin(angle) * stepSize;
 
-    if (direction == 0) {
-        newX += stepSize;  // Right
-      } else if (direction == 1) {
-        newX -= stepSize;  // Left
-      } else if (direction == 2) {
-        newY += stepSize;  // Down
-      } else if (direction == 3) {
-        newY -= stepSize;  // Up
-      }
-    
+    // Dessiner une ligne entre l'ancien et le nouveau point
     line(mainLine.prevX, mainLine.prevY, newX, newY);
 
+    // Mettre à jour les coordonnées pour la prochaine itération
     mainLine.prevX = newX;
     mainLine.prevY = newY;
 
-     // Adding randlomly new lines 
-    rand = floor(random(30));
-    if (rand == 2){
-      if (lines.length < lineSlider.value()){
-        lines.push({
-          prevX: newX,
-          prevY:  newY,
-        })
-      }
+    // Avancer dans le bruit
+    mainLine.offsetX += noiseScale;
+    mainLine.offsetY += noiseScale;
+
+    // Ajouter aléatoirement de nouveaux marcheurs
+    if (random(1) < 0.05 && lines.length < lineSlider.value()) {
+      lines.push({
+        prevX: newX,
+        prevY: newY,
+        offsetX: random(1000),
+        offsetY: random(1000),
+        baseAngle: random(TWO_PI)
+
+      });
     }
   }
+  
+  // for (let mainLine of lines) {
+  //   stroke(mainColor);
+
+  //   let stepSize = random(10, 30);
+  //   let direction = floor(random(4));
+
+  //   let newX = mainLine.prevX;
+  //   let newY = mainLine.prevY;
+
+  //   if (direction == 0) {
+  //       newX += stepSize;  // Right
+  //     } else if (direction == 1) {
+  //       newX -= stepSize;  // Left
+  //     } else if (direction == 2) {
+  //       newY += stepSize;  // Down
+  //     } else if (direction == 3) {
+  //       newY -= stepSize;  // Up
+  //     }
+    
+  //   line(mainLine.prevX, mainLine.prevY, newX, newY);
+
+  //   mainLine.prevX = newX;
+  //   mainLine.prevY = newY;
+
+  //    // Adding randlomly new lines 
+  //   rand = floor(random(30));
+  //   if (rand == 2){
+  //     if (lines.length < lineSlider.value()){
+  //       lines.push({
+  //         prevX: newX,
+  //         prevY:  newY,
+  //       })
+  //     }
+  //   }
+  // }
+
   // Black translucent layer to create a fade effect
 
     fill(0, 0, 0, 0.03); 
@@ -78,7 +122,7 @@ function draw(){
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight*2);
+    resizeCanvas(windowWidth, windowHeight);
     background(0, 0, 0);
     prevX = mouseX;
     prevY = mouseY;
@@ -93,6 +137,10 @@ function mouseMoved() {
   lines.push({
     prevX: mouseX,
     prevY: mouseY,
+    offsetX: random(1000),
+    offsetY: random(1000),
+    baseAngle: random(TWO_PI)
+
   })
 }
 function mouseClicked(){
